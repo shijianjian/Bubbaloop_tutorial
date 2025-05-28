@@ -1,0 +1,3 @@
+[submodule "bubbaloop"]
+	path = bubbaloop
+	url = https://github.com/kornia/bubbaloop.git

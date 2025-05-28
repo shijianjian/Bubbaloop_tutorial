@@ -1,0 +1,1 @@
+docker run --rm -it -p 8554:8554 -p 5000:5000 -v $(pwd)/videos:/app/videos rtsp-streamer videos/video_1.mp4 videos/video_2.mp4
