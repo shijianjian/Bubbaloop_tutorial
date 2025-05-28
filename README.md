@@ -1,5 +1,9 @@
 ```
-python generate_camera_config.py  --rtsp_streams rtsp://XXXX rtsp://YYYY  --output_path ./bubbaloop/src/cu29/pipelines/cameras_1.ron
+git submodule update --init --recursive
+```
+
+```
+python generate_camera_config.py  --rtsp_streams rtsp://rtspstream:4j_U0tJ6fGtiaKREnuVnH@zephyr.rtsp.stream/movie  --output_path ./bubbaloop/src/cu29/pipelines/cameras_1.ron
 ```
 
 ```
