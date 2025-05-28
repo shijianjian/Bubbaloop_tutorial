@@ -45,16 +45,16 @@ ENV OPENSSL_INCLUDE_DIR="/usr/include"
 WORKDIR /app
 
 # Copy app files
-COPY examples examples
-COPY scripts scripts
-COPY src src
-COPY Cargo.toml .
-COPY Cross.toml .
-COPY README.md .
-COPY build.rs .
-COPY justfile .
-COPY package.json .
-COPY package-lock.json .
+COPY bubbaloop/examples examples
+COPY bubbaloop/scripts scripts
+COPY bubbaloop/src src
+COPY bubbaloop/Cargo.toml .
+COPY bubbaloop/Cross.toml .
+COPY bubbaloop/README.md .
+COPY bubbaloop/build.rs .
+COPY bubbaloop/justfile .
+COPY bubbaloop/package.json .
+COPY bubbaloop/package-lock.json .
 
 # Run installation script
 RUN /app/scripts/install_linux.sh
