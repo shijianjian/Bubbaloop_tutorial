@@ -1,3 +1,5 @@
+# Bubbaloop 101: Turn your iPhone into a security camera via RTSP streams
+
 ## Configuration
 
 You may test if you can access the RTSP stream by: ```vlc rtsp://YOUR_RTSP_LINK```. Here are several methods to obtain RTSP steams.
@@ -18,7 +20,17 @@ You may use a public stream via [rtsp.stream](https://www.rtsp.stream/admin/test
 ### Input RTSP Streams to the rust config file
 
 ```
+git submodule update --init --recursive
+```
+
+If you want to serve multiple streams (max is 4 by now),
+```
 python generate_camera_config.py --output_path ./bubbaloop/src/cu29/pipelines/cameras_1.ron --rtsp_streams rtsp://XXXX rtsp://YYYY
+```
+
+Only one for this tutorial,
+```
+python generate_camera_config.py  --rtsp_streams rtsp://rtspstream:4j_U0tJ6fGtiaKREnuVnH@zephyr.rtsp.stream/movie  --output_path ./bubbaloop/src/cu29/pipelines/cameras_1.ron
 ```
 
 ## Start
