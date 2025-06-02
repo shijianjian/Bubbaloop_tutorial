@@ -69,24 +69,36 @@ def generate_camera_config(rtsp_streams):
 
 def _get_recorder_config(num_cameras):
     if num_cameras == 1:
-        return f'''        (
+        return '''        (
             id: "recorder",
             type: "crate::cu29::tasks::RecorderOne",
+            config: {
+                "path": "/tmp/",
+            }
         ),'''
     elif num_cameras == 2:
-        return f'''        (
+        return '''        (
             id: "recorder",
             type: "crate::cu29::tasks::RecorderTwo",
+            config: {
+                "path": "/tmp/",
+            }
         ),'''
     elif num_cameras == 3:
-        return f'''        (
+        return '''        (
             id: "recorder",
             type: "crate::cu29::tasks::RecorderThree",
+            config: {
+                "path": "/tmp/",
+            }
         ),'''
     elif num_cameras == 4:
-        return f'''        (
+        return '''        (
             id: "recorder",
             type: "crate::cu29::tasks::RecorderFour",
+            config: {
+                "path": "/tmp/",
+            }
         ),'''
     else:
         raise ValueError(f"Unsupported number of cameras: {num_cameras}")
