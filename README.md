@@ -77,7 +77,7 @@ sudo docker build -t bubbaloop_base .
 
 2. Run the Docker container:
 ```bash
-sudo docker run --rm -it -p 3000:3000 bubbaloop_base
+sudo docker run --network host --rm -it -p 3000:3000 bubbaloop_base
 ```
 
 3. Get the container ID:
@@ -87,7 +87,7 @@ sudo docker ps
 
 4. In a new terminal, access the container:
 ```bash
-sudo docker exec -it CONTAINER_ID /bin/bash
+sudo docker exec -it $(sudo docker ps -q) /bin/bash
 ```
 
 5. Start the pipeline:
@@ -104,7 +104,7 @@ cd bubbaloop
 
 2. Start the client viewer:
 ```bash
-python examples/python-streaming/client.py --host 0.0.0.0 --port 3000 --cameras 0 1
+python examples/python-streaming/client.py --host 0.0.0.0 --port 3000 --cameras 0
 ```
 
 ## Troubleshooting
