@@ -13,8 +13,9 @@ Bubbaloop is a powerful tool that allows you to transform your iPhone into a sec
 
 ## Prerequisites
 
-- Docker installed on your system
 - Python 3.x
+- GStreamer
+- Rust
 - Git
 - iPhone (for using your phone as a camera) or access to public RTSP streams
 
@@ -30,7 +31,7 @@ You have two options for setting up your RTSP stream:
    - Tap the top-right dropdown menu
    - Select "Settings"
    - Note down your username and password
-4. The app will display your RTSP stream URL
+4. The app will display your RTSP stream URL (you may verify the RTSP stream on a webpage).
 
 ### Option 2: Using Public RTSP Streams
 
@@ -50,20 +51,33 @@ vlc rtsp://YOUR_RTSP_LINK
 git submodule update --init --recursive
 ```
 
+2. Copying the `Cargo.lock` for a better reproducibility.
+```bash
+cp Cargo.lock ./bubbaloop
+cp install_linux.sh ./bubbaloop/scripts
+```
+For Mac users, installing GStreamers is mandatory:
+```bash
+brew reinstall gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
+```
+
 ## Configuration
 
 Generate the camera configuration file using our Python script. You have two options:
 
 ### Single Camera Setup (Recommended for Beginners)
+
+For a public stream:
 ```bash
 python generate_camera_config.py \
   --rtsp_streams rtsp://rtspstream:4j_U0tJ6fGtiaKREnuVnH@zephyr.rtsp.stream/movie \
   --output_path ./bubbaloop/src/cu29/pipelines/streaming.ron
 ```
 
+For your iPhone feed:
 ```bash
 python generate_camera_config.py \
-  --rtsp_streams rtsp://admin:admin@10.185.38.90:8554/live \
+  --rtsp_streams rtsp://admin:admin@10.240.40.255:8554/live \
   --output_path ./bubbaloop/src/cu29/pipelines/streaming.ron
 ```
 
@@ -76,29 +90,14 @@ python generate_camera_config.py \
 
 ## Running Bubbaloop
 
-1. Build the Docker image:
+1. In a new terminal, access the container:
 ```bash
-sudo docker build -t bubbaloop_base .
+just serve
 ```
 
-2. Run the Docker container:
+2. Start the pipeline:
 ```bash
-sudo docker run --network host --rm -it -p 3000:3000 bubbaloop_base
-```
-
-3. Get the container ID:
-```bash
-sudo docker ps
-```
-
-4. In a new terminal, access the container:
-```bash
-sudo docker exec -it $(sudo docker ps -q) /bin/bash
-```
-
-5. Start the pipeline:
-```bash
-just start-pipeline steaming 0.0.0.0 3000
+just start-pipeline streaming 0.0.0.0 3000
 ```
 
 ## Viewing the Camera Feed
@@ -120,9 +119,5 @@ python examples/python-streaming/client.py --host 0.0.0.0 --port 3000
   - The RTSP URL is correct
   - The stream credentials are valid
   - Your firewall isn't blocking the connection
-
-- If the Docker container fails to start:
-  - Ensure port 3000 isn't being used by another application
-  - Check if Docker has sufficient permissions
 
 For additional help or to report issues, please visit our GitHub repository.
