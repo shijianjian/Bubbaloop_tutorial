@@ -1,4 +1,4 @@
-# Bubbaloop: Turn Your iPhone into a Security Camera System
+# Bubbaloop 101: Turn Your iPhone into a Security Camera System
 
 Bubbaloop is a powerful tool that allows you to transform your iPhone into a security camera using RTSP streams. This tutorial will guide you through the setup and usage process.
 
@@ -128,6 +128,8 @@ cd bubbaloop
 ```bash
 python examples/python-streaming/client.py --host 0.0.0.0 --port 3000
 ```
+
+![](https://kornia.gitbook.io/~gitbook/image?url=https%3A%2F%2Fgithub.com%2Fkornia%2Fdata%2Fblob%2Fmain%2Fbubbaloop%2Fbubbaloop_inference.png%3Fraw%3Dtrue&width=768&dpr=2&quality=100&sign=191d02ea&sv=2)
 
 ## Troubleshooting
 
