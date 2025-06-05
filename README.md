@@ -14,10 +14,17 @@ Bubbaloop is a powerful tool that allows you to transform your iPhone into a sec
 ## Prerequisites
 
 - Python 3.x
+- CMake
 - GStreamer
 - Rust
-- Git
+- Rerun-sdk
 - iPhone (for using your phone as a camera) or access to public RTSP streams
+
+
+For Mac users, installing cmake and GStreamer are mandatory:
+```bash
+brew reinstall gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
+```
 
 ## Setting Up the RTSP Stream
 
@@ -41,7 +48,16 @@ If you can't use your iPhone or want to test with public streams:
 
 To verify your RTSP stream is working:
 ```bash
+gst-launch-1.0 rtspsrc location=rtsp://admin:admin@10.240.40.255:8554/live ! decodebin ! fakesink
+```
+
+Or for a visualization, you may try with VLC or FFPLay:
+```bash
 vlc rtsp://YOUR_RTSP_LINK
+```
+or using ffplay
+```bash
+ffplay rtsp://YOUR_RTSP_LINK
 ```
 
 ## Installation
@@ -55,10 +71,6 @@ git submodule update --init --recursive
 ```bash
 cp Cargo.lock ./bubbaloop
 cp install_linux.sh ./bubbaloop/scripts
-```
-For Mac users, installing GStreamers is mandatory:
-```bash
-brew reinstall gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
 ```
 
 ## Configuration
@@ -89,6 +101,11 @@ python generate_camera_config.py \
 ```
 
 ## Running Bubbaloop
+
+Get into the bubbaloop folder:
+```bash
+cd bubbaloop
+```
 
 1. In a new terminal, access the container:
 ```bash
