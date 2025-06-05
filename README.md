@@ -58,13 +58,19 @@ Generate the camera configuration file using our Python script. You have two opt
 ```bash
 python generate_camera_config.py \
   --rtsp_streams rtsp://rtspstream:4j_U0tJ6fGtiaKREnuVnH@zephyr.rtsp.stream/movie \
-  --output_path ./bubbaloop/src/cu29/pipelines/cameras_1.ron
+  --output_path ./bubbaloop/src/cu29/pipelines/streaming.ron
+```
+
+```bash
+python generate_camera_config.py \
+  --rtsp_streams rtsp://admin:admin@10.185.38.90:8554/live \
+  --output_path ./bubbaloop/src/cu29/pipelines/streaming.ron
 ```
 
 ### Multiple Camera Setup (Up to 4 Cameras)
 ```bash
 python generate_camera_config.py \
-  --output_path ./bubbaloop/src/cu29/pipelines/cameras_1.ron \
+  --output_path ./bubbaloop/src/cu29/pipelines/streaming.ron \
   --rtsp_streams rtsp://STREAM1_URL rtsp://STREAM2_URL
 ```
 
@@ -92,7 +98,7 @@ sudo docker exec -it $(sudo docker ps -q) /bin/bash
 
 5. Start the pipeline:
 ```bash
-just start-pipeline cameras 0.0.0.0 3000
+just start-pipeline steaming 0.0.0.0 3000
 ```
 
 ## Viewing the Camera Feed
@@ -104,7 +110,7 @@ cd bubbaloop
 
 2. Start the client viewer:
 ```bash
-python examples/python-streaming/client.py --host 0.0.0.0 --port 3000 --cameras 0
+python examples/python-streaming/client.py --host 0.0.0.0 --port 3000
 ```
 
 ## Troubleshooting

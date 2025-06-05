@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # Set non-interactive frontend
 ENV DEBIAN_FRONTEND=noninteractive
@@ -19,6 +19,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
+    curl \
     gdb \
     software-properties-common \
     wget \
@@ -53,12 +54,18 @@ COPY bubbaloop/Cross.toml .
 COPY bubbaloop/README.md .
 COPY bubbaloop/build.rs .
 COPY bubbaloop/justfile .
-COPY bubbaloop/package.json .
-COPY bubbaloop/package-lock.json .
+COPY Cargo.lock .
+COPY install_linux.sh scripts/install_linux.sh
+# COPY bubbaloop/package.json .
+# COPY bubbaloop/package-lock.json .
 
 # Run installation script
+# RUN chmod +x /app/scripts/install_deps.sh
+RUN chmod +x /app/scripts/install_linux.sh
+# RUN /app/scripts/install_deps.sh
 RUN /app/scripts/install_linux.sh
 # RUN systemctl status bubbaloop
 # RUN sudo journalctl -u bubbaloop.service -f
+EXPOSE 3000
 
 ENTRYPOINT ["just", "serve"]

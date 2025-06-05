@@ -33,21 +33,21 @@ def generate_camera_config(rtsp_streams):
             type: "crate::cu29::tasks::ImageEncoder",
         ),''')
 
-        # Add broadcast task
-        tasks.append(f'''        (
-            id: "bcast{i}",
-            type: "crate::cu29::tasks::ImageBroadcast",
+        if i == 0:
+            # Add broadcast task
+            tasks.append(f'''        (
+            id: "broadcast",
+            type: "crate::cu29::tasks::ImageBroadcast1",
         ),''')
 
         # Add connections
         connections.extend([
             f'        (src: "cam{i}", dst: "enc{i}", msg: "crate::cu29::msgs::ImageRgb8Msg"),',
-            f'        (src: "enc{i}", dst: "recorder", msg: "crate::cu29::msgs::EncodedImage"),',
-            f'        (src: "enc{i}", dst: "bcast{i}", msg: "crate::cu29::msgs::EncodedImage"),'
+            f'        (src: "enc{i}", dst: "broadcast", msg: "crate::cu29::msgs::EncodedImage"),',
         ])
 
     # Add recorder task at the end
-    tasks.append(_get_recorder_config(num_cameras))
+    # tasks.append(_get_recorder_config(num_cameras))
 
     # Generate the complete RON configuration
     config = f'''(
