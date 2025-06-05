@@ -25,6 +25,12 @@ For Mac users, installing cmake and GStreamer are mandatory:
 ```bash
 brew reinstall gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
 ```
+For linux users:
+```bash
+cp install_linux.sh ./bubbaloop/scripts
+cd bubbaloop
+./scripts/install_linux.sh
+```
 
 ## Setting Up the RTSP Stream
 
@@ -70,7 +76,6 @@ git submodule update --init --recursive
 2. Copying the `Cargo.lock` for a better reproducibility.
 ```bash
 cp Cargo.lock ./bubbaloop
-cp install_linux.sh ./bubbaloop/scripts
 ```
 
 ## Configuration
