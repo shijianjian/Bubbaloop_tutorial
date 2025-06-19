@@ -95,13 +95,13 @@ For your iPhone feed:
 ```bash
 python generate_camera_config.py \
   --rtsp_streams rtsp://admin:admin@10.240.40.255:8554/live \
-  --output_path ./bubbaloop/src/cu29/pipelines/streaming.ron
+  --output_path ./bubbaloop/src/cu29/pipelines/cameras_1.ron
 ```
 
 ### Multiple Camera Setup (Up to 4 Cameras)
 ```bash
 python generate_camera_config.py \
-  --output_path ./bubbaloop/src/cu29/pipelines/streaming.ron \
+  --output_path ./bubbaloop/src/cu29/pipelines/cameras_1.ron \
   --rtsp_streams rtsp://STREAM1_URL rtsp://STREAM2_URL
 ```
 
@@ -119,7 +119,7 @@ just serve
 
 2. Start the pipeline:
 ```bash
-just start-pipeline streaming 0.0.0.0 3000
+just start-pipeline cameras 0.0.0.0 3000
 ```
 
 ## Viewing the Camera Feed

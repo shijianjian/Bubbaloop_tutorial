@@ -2,6 +2,7 @@
 
 import argparse
 
+
 def generate_camera_config(rtsp_streams):
     tasks = []
     connections = []
@@ -19,38 +20,40 @@ def generate_camera_config(rtsp_streams):
             id: "cam{i}",
             type: "crate::cu29::tasks::VideoCapture",
             config: {{
-                "source_type": "{camera_config['source_type']}",
+                "source_type": "{camera_config["source_type"]}",
                 // URL of the RTSP camera
                 // rtsp://<username>:<password>@<ip>:<port>/<stream>
-                "source_uri": "{camera_config['source_uri']}",
-                "channel_id": {camera_config['channel_id']},
+                "source_uri": "{camera_config["source_uri"]}",
+                "channel_id": {camera_config["channel_id"]},
             }}
         ),''')
 
         # Add encoder task
-        tasks.append(f'''        (
+        tasks.append(f"""        (
             id: "enc{i}",
             type: "crate::cu29::tasks::ImageEncoder",
-        ),''')
+        ),""")
 
         if i == 0:
             # Add broadcast task
-            tasks.append(f'''        (
+            tasks.append("""        (
             id: "broadcast",
-            type: "crate::cu29::tasks::ImageBroadcast1",
-        ),''')
+            type: "crate::cu29::tasks::ImageBroadcast",
+        ),""")
 
         # Add connections
-        connections.extend([
-            f'        (src: "cam{i}", dst: "enc{i}", msg: "crate::cu29::msgs::ImageRgb8Msg"),',
-            f'        (src: "enc{i}", dst: "broadcast", msg: "crate::cu29::msgs::EncodedImage"),',
-        ])
+        connections.extend(
+            [
+                f'        (src: "cam{i}", dst: "enc{i}", msg: "crate::cu29::msgs::ImageRgb8GstMsg"),',
+                f'        (src: "enc{i}", dst: "broadcast", msg: "crate::cu29::msgs::EncodedImage"),',
+            ]
+        )
 
     # Add recorder task at the end
     # tasks.append(_get_recorder_config(num_cameras))
 
     # Generate the complete RON configuration
-    config = f'''(
+    config = f"""(
     tasks: [
 {chr(10).join(tasks)}
     ],
@@ -63,64 +66,74 @@ def generate_camera_config(rtsp_streams):
         enable_task_logging: false,
     ),
 )
-'''
+"""
     return config
 
 
 def _get_recorder_config(num_cameras):
     if num_cameras == 1:
-        return '''        (
+        return """        (
             id: "recorder",
             type: "crate::cu29::tasks::RecorderOne",
             config: {
                 "path": "/tmp/",
             }
-        ),'''
+        ),"""
     elif num_cameras == 2:
-        return '''        (
+        return """        (
             id: "recorder",
             type: "crate::cu29::tasks::RecorderTwo",
             config: {
                 "path": "/tmp/",
             }
-        ),'''
+        ),"""
     elif num_cameras == 3:
-        return '''        (
+        return """        (
             id: "recorder",
             type: "crate::cu29::tasks::RecorderThree",
             config: {
                 "path": "/tmp/",
             }
-        ),'''
+        ),"""
     elif num_cameras == 4:
-        return '''        (
+        return """        (
             id: "recorder",
             type: "crate::cu29::tasks::RecorderFour",
             config: {
                 "path": "/tmp/",
             }
-        ),'''
+        ),"""
     else:
         raise ValueError(f"Unsupported number of cameras: {num_cameras}")
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Generate camera configuration .ron file from RTSP streams')
-    parser.add_argument('--rtsp_streams', nargs='+', required=True,
-                      help='List of RTSP stream URLs (e.g., rtsp://user:pass@ip:port/stream)')
-    parser.add_argument('--output_path', type=str, default=None,
-                        help='Path to save the generated .ron file')
+    parser = argparse.ArgumentParser(
+        description="Generate camera configuration .ron file from RTSP streams"
+    )
+    parser.add_argument(
+        "--rtsp_streams",
+        nargs="+",
+        required=True,
+        help="List of RTSP stream URLs (e.g., rtsp://user:pass@ip:port/stream)",
+    )
+    parser.add_argument(
+        "--output_path",
+        type=str,
+        default=None,
+        help="Path to save the generated .ron file",
+    )
     args = parser.parse_args()
 
     # Generate configuration based on provided RTSP streams
     config = generate_camera_config(args.rtsp_streams)
     # filename = f"cameras_{len(args.rtsp_streams)}.ron"
-    filename = args.output_path if args.output_path else f"cameras.ron"
-    
+    filename = args.output_path if args.output_path else "cameras_1.ron"
+
     with open(filename, "w") as f:
         f.write(config)
     print(f"Generated {filename} with {len(args.rtsp_streams)} camera(s)")
 
 
 if __name__ == "__main__":
-    main() 
+    main()
